@@ -1,10 +1,9 @@
 namespace Claudio
 {
     using System;
+    using System.Threading;
     using System.Globalization;
     using System.Collections.Generic;
-    using System.Linq;
-
     class Forca
     {
         static void Main()
@@ -38,20 +37,28 @@ namespace Claudio
             palavra = listaPalavras[rng.Next(0,listaPalavras.Length)];
 
             string cesar = new string('_',palavra.Length);
-            Console.WriteLine(cesar);
 
             do 
             {
-                Console.WriteLine("\nEscreva uma letra: ");
+                if (erros == 0)
+                {
+                    Console.Clear();
+                    Window.DrawBG();
+                }
+
+                Window.ClearPos(Console.WindowWidth/2-40,Console.WindowHeight/2+2,80);
+                Window.WriteCenter(cesar,0);
+                Window.WriteCenter("Escreva uma letra: ",1);
                 string read = Console.ReadLine();
                 char letra = read.ToCharArray()[0];
                 if (read == "dica")
                 {
-                    Console.WriteLine(dicas[palavra]);
+                    Window.WriteCenter(dicas[palavra],2);
                 }
                 else if (letrasRepetidas.Contains(letra))
                 {
-                    Console.WriteLine("Você já escolheu essa letra!");
+                    Window.WriteCenter("Você já escolheu essa letra!",2);
+                    Thread.Sleep(500);
                 }
                 else if (palavra.Contains(letra.ToString()))
                 {
@@ -66,14 +73,13 @@ namespace Claudio
                         }
                         cesar = new string(cesarArray);
                     }
-
-                    Console.WriteLine(cesar);
                 }
                 else 
                 {
                     erros++;
-                    Console.WriteLine("Não há essa letra na palavra escolhida!");
-                    Console.WriteLine($"ERROS: {erros}");
+                    Window.WriteCenter("Não há essa letra na palavra escolhida!",2);
+                    Window.WriteCenter($"ERROS: {erros}",Console.BufferHeight/2-3);
+                    Thread.Sleep(500);
                 }
             } while(cesar != palavra);
         }
