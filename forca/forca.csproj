@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Default target for non-Windows platforms, supporting .NET 5 and beyond -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFrameworks>net8.0;net7.0;net6.0;net5.0</TargetFrameworks>
+  </PropertyGroup>
+
+  <!-- Set default target framework -->
+  <PropertyGroup>
+    <TargetFramework Condition="'$(TargetFramework)' == ''">net8.0</TargetFramework>
+  </PropertyGroup>
+
+  <!-- Conditional target for Windows (net472) -->
+  <PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+  </PropertyGroup>
+
+</Project>
