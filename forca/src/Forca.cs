@@ -49,7 +49,7 @@ namespace Claudio
                 Window.ClearPos(Console.WindowWidth/2-40,Console.WindowHeight/2+2,80);
                 Window.WriteCenter(cesar,0);
                 Window.WriteCenter("Escreva uma letra: ",1);
-                string read = Console.ReadLine();
+                string read = Console.ReadLine().Trim(' ');
                 char letra = read.ToCharArray()[0];
                 if (read == "dica")
                 {
