@@ -14,7 +14,7 @@ namespace Claudio
                 "caatinga",
                 "transeunte",
                 "quarentena",
-                "pokemon"
+                "pokémon"
             };
 
             Random rng = new Random();
@@ -60,28 +60,36 @@ namespace Claudio
                     Window.WriteCenter("Você já escolheu essa letra!",2);
                     Thread.Sleep(500);
                 }
-                else if (palavra.Contains(letra.ToString()))
+                else
                 {
+                    bool found = false;
                     char[] cesarArray = cesar.ToCharArray();
                     letrasRepetidas.Add(letra);
 
-                    for (int i=0; i<palavra.Length; i++) 
+                    for (int i = 0; i<palavra.Length; i++)
                     {
-                        if (string.Compare(palavra[i].ToString(), letra.ToString(), CultureInfo.CurrentCulture, CompareOptions.IgnoreNonSpace) == 0)
+                        if (string.Compare(palavra[i].ToString(), letra.ToString(), CultureInfo.CurrentCulture, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) == 0)
                         {
-                            cesarArray[i] = letra;
+                            cesarArray[i] = palavra[i];
+                            found = true;
                         }
-                        cesar = new string(cesarArray);
+                    }
+
+                    cesar = new string(cesarArray);
+
+                    if (!found)
+                    {
+                        erros++;
+                        Window.WriteCenter("Não há essa letra na palavra escolhida!", 2);
+                        Window.WriteCenter($"ERROS: {erros}", Console.BufferHeight/2-3);
+                        Thread.Sleep(500);
                     }
                 }
-                else 
-                {
-                    erros++;
-                    Window.WriteCenter("Não há essa letra na palavra escolhida!",2);
-                    Window.WriteCenter($"ERROS: {erros}",Console.BufferHeight/2-3);
-                    Thread.Sleep(500);
-                }
             } while(cesar != palavra);
+
+            Window.WriteCenter(cesar,0);
+            Thread.Sleep(500);
+            Console.Clear();
         }
 
         static string fmt(string str) 
