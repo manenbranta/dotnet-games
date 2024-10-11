@@ -4,21 +4,17 @@ namespace Imeri;
 
 class Program
 {
-    Player plr = new Player(0,0);
-    static List<Entity> Entities = new List<Entity> {
-        plr
-    };
-
-    bool gameIsRunning = true;
+    public static Game Game = new();
+    static bool gameIsRunning = true;
 
     static void Main()
     {
+        Player plr = new Player(0,0);
+
+        Game.AddEntity(plr);
         while (gameIsRunning)
         {
-            foreach (Entity e in Entities)
-            {
-                e.Update();
-            }
+            Game.Update();
         }
     }
 }

@@ -1,16 +1,29 @@
 namespace Imeri.Entities;
 
+using Components.Interfaces;
+
 public abstract class Entity: Object
 {
-    public bool IsColliding(Object other)
+    private readonly List<IComponent> _components = new List<IComponent>();
+    public Entity(int x, int y,int width, int height): base(x,y,width,height) {}
+
+    public void AddComponent(IComponent component)
     {
-        return X < other.X + other.Width &&
-               X + Width > other.X &&
-               Y < other.Y + other.Height &&
-               Y + Height > other.Y;
+        _components.Add(component);
     }
 
-    public abstract void Update();
+    public void RemoveComponent(IComponent component)
+    {
+        _components.Remove(component);
+    }
+
+    public void Update()
+    {
+        foreach (var component in _components)
+        {
+            component.Update();
+        }
+    }
 
     public abstract void OnCollision(Object other);
 }
