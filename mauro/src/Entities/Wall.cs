@@ -4,11 +4,15 @@ using Mauro.Entities.Interfaces;
 
 class Wall: GameObject, ICollidable
 {
-    public Wall(int X,int Y,int Width,int Height): base(X,Y,Width,Height) {}
+    public Wall(int X,int Y,int Width,int Height): base(X,Y,Width,Height) 
+    {
+        Character = '█';
+        Color = ConsoleColor.DarkYellow;
+    }
 
-    /**
-    * As paredes são imóveis, então elas não precisam de Update().
-    */
+    /// <summary>
+    /// As paredes são imóveis, então elas não precisam de <c>Update()</c>.
+    /// </summary>
     public override void Update() {}
 
     public bool CheckCollision(ICollidable other)
@@ -17,8 +21,8 @@ class Wall: GameObject, ICollidable
            Y < other.Y + other.Height && Y + Height > other.Y;
     }
 
-    /**
-    * As paredes não precisam lidar com a colisão.
-    */
+    /// <summary>
+    /// As paredes não precisam lidar com a colisão.
+    /// </summary>
     public void HandleCollision(ICollidable other) {}
 }

@@ -4,7 +4,11 @@ using Mauro.Entities.Interfaces;
 
 class Player: GameObject, ICollidable
 {
-    public Player(int X,int Y): base(X,Y,1,1) {}
+    public Player(int X,int Y): base(X,Y,1,1) 
+    {
+        Character = '■';
+        Color = ConsoleColor.Red;
+    }
 
     public override void Update()
     {
@@ -20,6 +24,7 @@ class Player: GameObject, ICollidable
         }
     }
 
+    /// <inheritdoc cref="ICollidable.CheckCollision(ICollidable)"/>
     public bool CheckCollision(ICollidable other)
     {
         return X < other.X + other.Width && X + Width > other.X &&

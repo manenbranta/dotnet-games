@@ -1,5 +1,8 @@
 namespace Mauro.Entities.Interfaces;
 
+/// <summary>
+/// Essa é uma interface que representa todas as coisas no jogo que tem colisão.
+/// </summary>
 public interface ICollidable
 {
     int X { get; }

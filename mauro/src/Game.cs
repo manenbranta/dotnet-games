@@ -38,4 +38,22 @@ public class Game
             obj.Update();
         }
     }
+
+    public void Render(int screenWidth, int screenHeight)
+    {
+        char[,] screen = new char[screenHeight, screenWidth];
+
+        for (int x = 0; x < screenWidth; x++)
+        {
+            for (int y = 0; y < screenHeight; y++)
+            {
+                screen[x, y] = ' ';
+            }
+        }
+
+        foreach (var obj in _objects)
+        {
+            obj.Render(screen);
+        }
+    }
 }
