@@ -1,4 +1,5 @@
-﻿using Mauro.Entities;
+﻿using System.Text;
+using Mauro.Entities;
 
 public class Game
 {
@@ -41,7 +42,10 @@ public class Game
 
     public void Render(int screenWidth, int screenHeight)
     {
-        char[,] screen = new char[screenHeight, screenWidth];
+        char[,] screen = new char[screenWidth, screenHeight];
+
+        // String que representa o frame atual.
+        StringBuilder sb = new StringBuilder(screenWidth*screenHeight);
 
         for (int x = 0; x < screenWidth; x++)
         {
@@ -55,5 +59,18 @@ public class Game
         {
             obj.Render(screen);
         }
+
+        Console.SetCursorPosition(0,0);
+
+        for (int y = 0; y < screenHeight; y++)
+        {
+            for (int x = 0; x < screenWidth; x++)
+            {
+                sb.Append(screen[x, y]);
+            }
+            sb.AppendLine();
+        }
+
+        Console.Write(sb.ToString());
     }
 }

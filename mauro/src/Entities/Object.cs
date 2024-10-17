@@ -19,7 +19,17 @@ public abstract class GameObject
 
     public void Render(char[,] screen)
     {
-        screen[X,Y] = Character;    
+        for (int x = X; x < X + Width; x++)
+        {
+            for (int y = Y; y < Y + Height; y++)
+            {
+                // Check bounds to avoid rendering outside the screen
+                if (x >= 0 && x < screen.GetLength(0) && y >= 0 && y < screen.GetLength(1))
+                {
+                    screen[x, y] = Character;
+                }
+            }
+        }  
     }
 
     public abstract void Update();
