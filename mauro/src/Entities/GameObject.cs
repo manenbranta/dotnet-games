@@ -23,7 +23,7 @@ public abstract class GameObject
         {
             for (int y = Y; y < Y + Height; y++)
             {
-                // Check bounds to avoid rendering outside the screen
+                // Checa os limites da tela pra não tentar acessar caracteres fora da tela.
                 if (x >= 0 && x < screen.GetLength(0) && y >= 0 && y < screen.GetLength(1))
                 {
                     screen[x, y] = Character;
