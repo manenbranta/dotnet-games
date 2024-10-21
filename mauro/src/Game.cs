@@ -60,14 +60,12 @@ public class Game
             obj.Render(screen);
         }
 
-        Console.SetCursorPosition(0,0);
-
         for (int y = 0; y < screenHeight; y++)
         {
             for (int x = 0; x < screenWidth; x++)
             {
                 var obj = _objects.FirstOrDefault(o => o.X <= x && o.X + o.Width > x && o.Y <= y && o.Y + o.Height > y);
-                if (obj != null)
+                if (obj != null && ColorRendering)
                 {
                     sb.Append(obj.Color);
                     sb.Append(screen[x, y]);
@@ -81,6 +79,7 @@ public class Game
             sb.AppendLine();
         }
 
+        Console.SetCursorPosition(0,0);
         Console.Write(sb.ToString());
     }
 }
