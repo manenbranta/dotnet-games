@@ -14,7 +14,7 @@ class Player: GameObject, IPhysics
     public Player(int X,int Y): base(X,Y,1,1) 
     {
         Character = '■';
-        Color = ConsoleColor.Red;
+        Color = Ansi.FRed;
     }
 
     public override void Update()

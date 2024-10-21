@@ -7,7 +7,7 @@ public abstract class GameObject
     public int Width { get; protected set; }
     public int Height { get; protected set; }
     public char Character {get; protected set;}
-    public ConsoleColor Color { get; protected set; }
+    public string Color { get; protected set; }
 
     public GameObject(int x, int y, int width, int height)
     {
@@ -15,6 +15,7 @@ public abstract class GameObject
         Y = y;
         Width = width;
         Height = height;
+        Color = Ansi.Reset;
     }
 
     public void Render(char[,] screen)

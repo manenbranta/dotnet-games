@@ -10,7 +10,6 @@ class Program
     static void Main()
     {
         Player plr = new Player(0,1);
-        plr.ApplyForce(1,0);
         Wall wall = new Wall(0,2,25,5);
         Wall wall2 = new Wall(25,0,3,2);
 
@@ -37,6 +36,16 @@ class Program
             * o que faz uma scrollbar horizontal aparecer. Fazer isso previne esse bug.
             */
             Console.SetBufferSize(screen.Width, screen.Height);
+
+            /*
+            * No Windows, as escape sequences ANSI não são ativadas por padrão,
+            * então é preciso manualmente ativá-las para poder usar elas. Elas foram
+            * escolhidas no lugar da classe `System.ConsoleColor` por ser mais simples
+            * de renderizar e estarem disponíveis em todas as maiores plataformas
+            * (Linux, MacOS, e Windows, caso ativado)
+            */
+            Windows.WindowsConsoleConfigurer config = new Windows.WindowsConsoleConfigurer();
+            config.SetupConsole();
         }
 
         // O jogo deve usar UTF8, pois usa caracteres fora do set ASCII

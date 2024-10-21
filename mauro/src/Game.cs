@@ -66,7 +66,17 @@ public class Game
         {
             for (int x = 0; x < screenWidth; x++)
             {
-                sb.Append(screen[x, y]);
+                var obj = _objects.FirstOrDefault(o => o.X <= x && o.X + o.Width > x && o.Y <= y && o.Y + o.Height > y);
+                if (obj != null)
+                {
+                    sb.Append(obj.Color);
+                    sb.Append(screen[x, y]);
+                    sb.Append("\u001b[0m");
+                }
+                else
+                {
+                    sb.Append(screen[x, y]);
+                }
             }
             sb.AppendLine();
         }
