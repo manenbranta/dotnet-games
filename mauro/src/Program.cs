@@ -9,10 +9,12 @@ class Program
 
     static void Main()
     {
-        Player plr = new Player(1,1);
-        Wall wall = new Wall(1,2,25,5);
+        Player plr = new Player(0,1);
+        plr.ApplyForce(1,0);
+        Wall wall = new Wall(0,2,25,5);
+        Wall wall2 = new Wall(25,0,3,2);
 
-        Init([plr, wall]);
+        Init(new GameObject[] {plr, wall, wall2});
 
         while (gameIsRunning)
         {
@@ -39,6 +41,9 @@ class Program
 
         // O jogo deve usar UTF8, pois usa caracteres fora do set ASCII
         Console.OutputEncoding = System.Text.Encoding.UTF8;
+
+        // O framerate em que a simulação do jogo roda
+        //xGame.Instance.DeltaTime = 60;
         
         foreach (var o in obj)
         {

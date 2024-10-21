@@ -1,6 +1,6 @@
 namespace Mauro.Entities;
 
-using Mauro.Entities.Interfaces;
+using Mauro.Interfaces;
 
 class Wall: GameObject, ICollidable
 {
