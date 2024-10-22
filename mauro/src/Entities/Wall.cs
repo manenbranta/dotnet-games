@@ -7,7 +7,7 @@ class Wall: GameObject, ICollidable
     public Wall(int X,int Y,int Width,int Height): base(X,Y,Width,Height) 
     {
         Character = '█';
-        Color = Ansi.FYellow;
+        Color = Ansi.RGB(94,48,22);
     }
 
     /// <summary>
