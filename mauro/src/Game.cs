@@ -7,6 +7,8 @@ public class Game
 
     private static readonly Game _instance = new Game();
 
+    public bool ColorRendering = true;
+
     private Game() {}
 
     public static Game Instance
