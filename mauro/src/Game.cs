@@ -66,7 +66,7 @@ public class Game
         {
             for (int x = 0; x < screenWidth; x++)
             {
-                var obj = _objects.FirstOrDefault(o => o.X <= x && o.X + o.Width > x && o.Y <= y && o.Y + o.Height > y);
+                var obj = _objects.FirstOrDefault(o => (int)o.Position.X <= x && (int)(o.Position.X + o.Scale.X) > x && (int)o.Position.Y <= y && (int)(o.Position.Y + o.Scale.Y) > y);
                 if (obj != null && ColorRendering)
                 {
                     sb.Append(obj.Color);

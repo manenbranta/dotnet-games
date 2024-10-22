@@ -1,17 +1,17 @@
 namespace Mauro.Entities;
 
 using Mauro.Interfaces;
+using Mauro.Utils;
 
 class Player: GameObject, IPhysics
 {
-    public double VelocityX { get; set; }
-    public double VelocityY { get; set; }
+    public Vector2 Velocity { get; set; }
     
-    private int previousX = 0;
-    private int previousY = 0;
+    private Vector2 previousPos = new Vector2();
     
     bool onGround = false;
-    public Player(int X,int Y): base(X,Y,1,1) 
+
+    public Player(Vector2 pos): base(pos,Vector2.One) 
     {
         Character = '■';
         Color = Ansi.FRed;
@@ -19,8 +19,7 @@ class Player: GameObject, IPhysics
 
     public override void Update()
     {
-        previousX = X;
-        previousY = Y;
+        previousPos = Position;
 
         UpdatePhysics();
 
@@ -29,16 +28,16 @@ class Player: GameObject, IPhysics
             switch (Console.ReadKey(true).Key)
             {
                 case ConsoleKey.D:
-                    X++;
+                    Position += Vector2.Right;
                     break;
                 case ConsoleKey.A:
-                    X--;
+                    Position += Vector2.Left;
                     break;
                 case ConsoleKey.S:
-                    Y++;
+                    Position += Vector2.Down;
                     break;
                 case ConsoleKey.W:
-                    Y--;
+                    Position += Vector2.Up;
                     break;
             }
         }
@@ -57,8 +56,8 @@ class Player: GameObject, IPhysics
 
     public bool CheckCollision(ICollidable other)
     {
-        return X < other.X + other.Width && X + Width > other.X &&
-           Y < other.Y + other.Height && Y + Height > other.Y;
+        return Position.X < other.Position.X + other.Scale.X && Position.X + Scale.X > other.Position.X &&
+           Position.Y < other.Position.Y + other.Scale.Y && Position.Y + Scale.Y > other.Position.Y;
     }
 
     public void HandleCollision(ICollidable other)
@@ -66,27 +65,27 @@ class Player: GameObject, IPhysics
         switch (other)
         {
             case Wall wall: {
-                if (previousX + Width <= wall.X && X + Width > wall.X)
+                if (previousPos.X + Scale.X <= wall.Position.X && Position.X + Scale.X > wall.Position.X)
                 {
-                    X = wall.X - Width;
-                    VelocityX = 0;
+                    Position = new Vector2(wall.Position.X - Scale.X, Position.Y);
+                    Velocity = new Vector2(0,Velocity.Y);
                 }
-                else if (previousX >= wall.X + wall.Width && X < wall.X + wall.Width)
+                else if (previousPos.X >= wall.Position.X + wall.Scale.X && Position.X < wall.Position.X + wall.Scale.X)
                 {
-                    X = wall.X + wall.Width;
-                    VelocityX = 0;
+                    Position = new Vector2(wall.Position.X + wall.Scale.X, Position.Y);
+                    Velocity = new Vector2(0,Velocity.Y);
                 }
                 
-                if (previousY + Height <= wall.Y && Y + Height > wall.Y)
+                if (previousPos.Y + Scale.Y <= wall.Position.Y && Position.Y + Scale.Y > wall.Position.Y)
                 {
-                    Y = wall.Y - Height;
-                    VelocityY = 0;
+                    Position = new Vector2(Position.X, wall.Position.Y - Scale.Y);
+                    Velocity = new Vector2(Velocity.X,0);
                     onGround = true;
                 }
-                else if (previousY >= wall.Y + wall.Height && Y < wall.Y + wall.Height)
+                else if (previousPos.Y >= wall.Position.Y + wall.Scale.Y && Position.Y < wall.Position.Y + wall.Scale.Y)
                 {
-                    Y = wall.Y + wall.Height;
-                    VelocityY = 0;
+                    Position = new Vector2(Position.X, wall.Position.Y + Scale.Y);
+                    Velocity = new Vector2(Velocity.X,0);
                 }
 
                 break;
@@ -96,15 +95,13 @@ class Player: GameObject, IPhysics
         }
     }
 
-    public void ApplyForce(double forceX, double forceY)
+    public void ApplyForce(Vector2 force)
     {
-        VelocityX += forceX;
-        VelocityY += forceY;
+        Velocity += force;
     }
 
     public void UpdatePhysics()
     {
-        X += (int)VelocityX;
-        Y += (int)VelocityY;
+        Position += Velocity;
     }
 }

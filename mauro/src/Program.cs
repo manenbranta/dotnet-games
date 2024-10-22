@@ -1,6 +1,7 @@
-﻿using Mauro.Entities;
+﻿namespace Mauro;
 
-namespace Mauro;
+using Mauro.Entities;
+using Mauro.Utils;
 
 class Program
 {
@@ -11,9 +12,9 @@ class Program
 
     static void Main(string[] Args)
     {
-        Player plr = new Player(0,1);
-        Wall wall = new Wall(0,2,25,5);
-        Wall wall2 = new Wall(25,0,3,2);
+        Player plr = new Player(new Vector2(0,1));
+        Wall wall = new Wall(new Vector2(0,2), new Vector2(25,5));
+        Wall wall2 = new Wall(new Vector2(25,0), new Vector2(3,2));
 
         args = Args;
 

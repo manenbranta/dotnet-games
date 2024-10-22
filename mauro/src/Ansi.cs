@@ -56,5 +56,6 @@ public static class Ansi
     public static string CursorPosSave => Enabled ? $"\u001b[s" : "";
     public static string CursorPosRestore => Enabled ? $"\u001b[u" : "";
 
-    public static string RGB(int red, int green, int blue) => Enabled ? $"\u001b[38;2;{red};{green};{blue}m" : "";
+    public static string FRGB(int red, int green, int blue) => Enabled ? $"\u001b[38;2;{red};{green};{blue}m" : "";
+    public static string BRGB(int red, int green, int blue) => Enabled ? $"\u001b[48;2;{red};{green};{blue}m" : "";
 }

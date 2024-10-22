@@ -1,13 +1,14 @@
 namespace Mauro.Entities;
 
 using Mauro.Interfaces;
+using Mauro.Utils;
 
 class Wall: GameObject, ICollidable
 {
-    public Wall(int X,int Y,int Width,int Height): base(X,Y,Width,Height) 
+    public Wall(Vector2 pos,Vector2 sca): base(pos,sca) 
     {
         Character = '█';
-        Color = Ansi.RGB(94,48,22);
+        Color = Ansi.FYellow;
     }
 
     /// <summary>
@@ -17,8 +18,8 @@ class Wall: GameObject, ICollidable
 
     public bool CheckCollision(ICollidable other)
     {
-        return X < other.X + other.Width && X + Width > other.X &&
-           Y < other.Y + other.Height && Y + Height > other.Y;
+        return Position.X < other.Position.X + other.Scale.X && Position.X + Scale.X > other.Position.X &&
+           Position.Y < other.Position.Y + other.Scale.Y && Position.Y + Scale.Y > other.Position.Y;
     }
 
     /// <summary>

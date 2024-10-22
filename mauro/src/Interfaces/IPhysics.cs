@@ -1,11 +1,12 @@
+using Mauro.Utils;
+
 namespace Mauro.Interfaces;
 
 public interface IPhysics: ICollidable
 {
-    double VelocityX { get; set; }
-    double VelocityY { get; set; }
+    Vector2 Velocity { get; set; }
 
-    void ApplyForce(double forceX, double forceY);
+    void ApplyForce(Vector2 force);
 
     void UpdatePhysics(/*double dt*/);
 }
