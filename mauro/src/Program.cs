@@ -1,5 +1,6 @@
 ﻿namespace Mauro;
 
+using System.Diagnostics;
 using Mauro.Entities;
 using Mauro.Utils;
 
@@ -8,10 +9,17 @@ class Program
     static bool gameIsRunning = true;
     static (int Width, int Height) screen = (80,25);
 
-    static string[] args;
+    static string[] args = [];
+
+    const int FPS = 60;
+    const double FrameTime = 1000.0/FPS;
 
     static void Main(string[] Args)
     {
+        double dt = 1/60;
+        Stopwatch _stopwatch = new Stopwatch();
+        double preUpdate,postUpdate;
+
         Player plr = new Player(new Vector2(0,1));
         Wall wall = new Wall(new Vector2(0,2), new Vector2(25,5));
         Wall wall2 = new Wall(new Vector2(25,0), new Vector2(3,2));
@@ -19,11 +27,23 @@ class Program
         args = Args;
 
         Init(new GameObject[] {plr, wall, wall2});
+        
+        _stopwatch.Start();
 
         while (gameIsRunning)
         {
-            Game.Instance.Update();
+            _stopwatch.Restart();
+            preUpdate = _stopwatch.Elapsed.TotalMilliseconds;
+
+            Game.Instance.Update(dt);
             Game.Instance.Render(screen.Width,screen.Height);
+
+            postUpdate = _stopwatch.Elapsed.TotalMilliseconds;
+            _stopwatch.Stop();
+
+            dt = postUpdate - preUpdate;
+
+            Thread.Sleep(Math.Max((int)(FrameTime-dt), 0));
         }
     }
 

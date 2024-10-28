@@ -5,11 +5,15 @@ using Mauro.Utils;
 
 class Player: GameObject, IPhysics
 {
+    public Vector2 Acceleration { get; set; }
     public Vector2 Velocity { get; set; }
     
     private Vector2 previousPos = new Vector2();
     
     bool onGround = false;
+
+    static double GRAVITY = 0.001;
+    static double MAX_Y_VELOCITY = 3;
 
     public Player(Vector2 pos): base(pos,Vector2.One) 
     {
@@ -17,11 +21,11 @@ class Player: GameObject, IPhysics
         Color = Ansi.FRed;
     }
 
-    public override void Update()
+    public override void Update(double dt)
     {
         previousPos = Position;
 
-        UpdatePhysics();
+        UpdatePhysics(dt);
 
         if (Console.KeyAvailable)
         {
@@ -100,8 +104,15 @@ class Player: GameObject, IPhysics
         Velocity += force;
     }
 
-    public void UpdatePhysics()
+    public void UpdatePhysics(double dt)
     {
-        Position += Velocity;
+        Acceleration = new Vector2(Acceleration.X,GRAVITY);
+        Velocity += Acceleration*dt;
+        Position += Velocity*dt;
+
+        if (Velocity.Y > MAX_Y_VELOCITY)
+        {
+            Velocity = new Vector2(Velocity.X, MAX_Y_VELOCITY);
+        }
     }
 }

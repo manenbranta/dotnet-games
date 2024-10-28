@@ -34,11 +34,11 @@ public class Game
         return _objects;
     }
 
-    public void Update()
+    public void Update(double deltaTime)
     {
         foreach (var obj in _objects)
         {
-            obj.Update();
+            obj.Update(deltaTime);
         }
     }
 

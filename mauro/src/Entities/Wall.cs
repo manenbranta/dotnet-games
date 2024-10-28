@@ -14,7 +14,7 @@ class Wall: GameObject, ICollidable
     /// <summary>
     /// As paredes são imóveis, então elas não precisam de <c>Update()</c>.
     /// </summary>
-    public override void Update() {}
+    public override void Update(double dt) {}
 
     public bool CheckCollision(ICollidable other)
     {
