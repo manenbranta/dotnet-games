@@ -89,6 +89,7 @@ namespace Forca
 
             Window.WriteCenter(cesar,0);
             Thread.Sleep(500);
+            Console.BackgroundColor = ConsoleColor.Black;
             Console.Clear();
         }
 

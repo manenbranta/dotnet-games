@@ -1,6 +1,7 @@
 namespace Forca
 {
     using System;
+    using System.Text;
     using static System.Console;
 
     class Window
@@ -33,13 +34,18 @@ namespace Forca
         {
             BackgroundColor = color;
 
+            StringBuilder sb = new StringBuilder();
+
             for (int i = 0; i < WindowWidth; i++)
             {
                 for (int j = 0; j < WindowHeight; j++)
                 {
-                    Write(" ");
+                    sb.Append(" ");
                 }
+                sb.AppendLine();
             }
+            
+            Console.Write(sb.ToString());
         }
 
         public static void Draw(int width, int height, char borda, ConsoleColor fg = ConsoleColor.White)
