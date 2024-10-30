@@ -12,6 +12,48 @@ namespace Forca
             Write(str);
         }
 
+        public static void WriteCenter(string str, int xAdd, int yAdd)
+        {
+            SetCursorPosition(WindowWidth/2-str.Length/2+xAdd,WindowHeight/2+yAdd);
+            Write(str);
+        }
+
+        public static void WriteFrameCenter(string frame)
+        {
+            // Split the frame into individual lines
+            string[] lines = frame.Split('\n');
+            int startY = WindowHeight/2 - lines.Length/2;
+
+            for (int i=0; i<lines.Length; i++)
+            {
+                // Center each line horizontally
+                int startX = WindowWidth/2 - lines[i].Length/2;
+                SetCursorPosition(startX, startY + i);
+                Write(lines[i]);
+            }
+        }
+
+        public static void PrintCentered(string text)
+        {
+            string[] lines = text.Split('\n');
+
+            int totalLines = lines.Length;
+            int topPadding = (WindowHeight - totalLines)/2-1;
+
+            // Set the cursor position for vertical centering
+            CursorTop = topPadding;
+
+            // Print each line centered horizontally
+            foreach (string line in lines)
+            {
+                int leftPadding = (WindowWidth - line.Length) / 2;
+                SetCursorPosition(leftPadding, CursorTop); // Set cursor position
+                Write(line); // Print the line
+                CursorTop++; // Move to the next line
+            }
+            WriteLine();
+        }
+
         public static void ClearCenter(int windowWidth, int windowHeight)
         {   
             for (int le = 1; le<windowHeight; le++) 

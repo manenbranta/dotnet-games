@@ -10,6 +10,73 @@ namespace Forca
         static Dictionary<string,string> dicas;
         static int erros = 0;
 
+        static string[] frames = {
+            #region FRAMES
+            @"      ╔═══╗   " + '\n' +
+            @"      |   ║   " + '\n' +
+            @"          ║   " + '\n' +
+            @"          ║   " + '\n' +
+            @"          ║   " + '\n' +
+            @"     ███  ║   " + '\n' +
+            @"    ══════╩═══",
+
+            @"      ╔═══╗   " + '\n' +
+            @"      |   ║   " + '\n' +
+            @"      O   ║   " + '\n' +
+            @"          ║   " + '\n' +
+            @"          ║   " + '\n' +
+            @"     ███  ║   " + '\n' +
+            @"    ══════╩═══",
+            
+            @"      ╔═══╗   " + '\n' +
+            @"      |   ║   " + '\n' +
+            @"      O   ║   " + '\n' +
+            @"      |   ║   " + '\n' +
+            @"          ║   " + '\n' +
+            @"     ███  ║   " + '\n' +
+            @"    ══════╩═══",
+            
+            @"      ╔═══╗   " + '\n' +
+            @"      |   ║   " + '\n' +
+            @"      O   ║   " + '\n' +
+            @"      |\  ║   " + '\n' +
+            @"          ║   " + '\n' +
+            @"     ███  ║   " + '\n' +
+            @"    ══════╩═══",
+            
+            @"      ╔═══╗   " + '\n' +
+            @"      |   ║   " + '\n' +
+            @"      O   ║   " + '\n' +
+            @"     /|\  ║   " + '\n' +
+            @"          ║   " + '\n' +
+            @"     ███  ║   " + '\n' +
+            @"    ══════╩═══",
+            
+            @"      ╔═══╗   " + '\n' +
+            @"      |   ║   " + '\n' +
+            @"      O   ║   " + '\n' +
+            @"     /|\  ║   " + '\n' +
+            @"       \  ║   " + '\n' +
+            @"     ███  ║   " + '\n' +
+            @"    ══════╩═══",
+            
+            @"      ╔═══╗   " + '\n' +
+            @"      |   ║   " + '\n' +
+            @"      O   ║   " + '\n' +
+            @"     /|\  ║   " + '\n' +
+            @"     / \  ║   " + '\n' +
+            @"     ███  ║   " + '\n' +
+            @"    ══════╩═══",
+            // Death
+            @"      ╔═══╗   " + '\n' +
+            @"      |   ║   " + '\n' +
+            @"      O   ║   " + '\n' +
+            @"     /|\  ║   " + '\n' +
+            @"     / \  ║   " + '\n' +
+            @"          ║   " + '\n' +
+            @"    ══════╩═══",
+            #endregion
+        };
         static void Main()
         {
             // Todas as palavras disponíveis para o jogo escolher aleatoriamente 
@@ -44,24 +111,34 @@ namespace Forca
 
             do 
             {
-                if (erros == 0)
+                if (erros <= 0)
                 {
                     Console.Clear();
                     Window.DrawBG();
                 }
 
-                Window.ClearPos(Console.WindowWidth/2-40,Console.WindowHeight/2+2,80);
-                Window.WriteCenter(cesar,0);
-                Window.WriteCenter("Escreva uma letra: ",1);
+                if (erros >= 6)
+                {
+                    Thread.Sleep(500);
+                    Window.PrintCentered(frames[7]);
+                    Thread.Sleep(1500);
+                    break;
+                }
+
+                Window.PrintCentered(frames[erros]);
+
+                Window.ClearPos(Console.WindowWidth/2-40,Console.WindowHeight/2+22,80);
+                Window.WriteCenter(cesar,20);
+                Window.WriteCenter("Escreva uma letra: ",21);
                 char[] read = Console.ReadLine().Trim(' ').ToCharArray();
                 char letra = read[0];
                 if (read.ToString() == "dica")
                 {
-                    Window.WriteCenter(wrd.GetDica(palavra),2);
+                    Window.WriteCenter(wrd.GetDica(palavra),22);
                 }
                 else if (letrasRepetidas.Contains(letra))
                 {
-                    Window.WriteCenter("Você já escolheu essa letra!",2);
+                    Window.WriteCenter("Você já escolheu essa letra!",22);
                     Thread.Sleep(500);
                 }
                 else if (wrd.HasChar(letra))
@@ -81,13 +158,13 @@ namespace Forca
                 else
                 {
                     erros++;
-                    Window.WriteCenter("Não há essa letra na palavra escolhida!", 2);
+                    Window.WriteCenter("Não há essa letra na palavra escolhida!", 22);
                     Window.WriteCenter($"ERROS: {erros}", Console.BufferHeight/2-3);
                     Thread.Sleep(500);
                 }
             } while(cesar != palavra);
 
-            Window.WriteCenter(cesar,0);
+            Window.WriteCenter(cesar,20);
             Thread.Sleep(500);
             Console.BackgroundColor = ConsoleColor.Black;
             Console.Clear();
