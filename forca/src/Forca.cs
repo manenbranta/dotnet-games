@@ -333,11 +333,13 @@ namespace Forca
         {
             string curSub;
 
-            ConsoleColor prevColor = Console.BackgroundColor;
+            ConsoleColor prevColor = Console.ForegroundColor;
+
+            ConsoleColor[] colors = {ConsoleColor.DarkCyan, ConsoleColor.Magenta, ConsoleColor.Yellow};
 
             for (int i=0; i<str.Length; i++)
             {
-                Console.BackgroundColor = ConsoleColor.Magenta;
+                Console.ForegroundColor = colors[i%colors.Length];
                 Console.SetCursorPosition(Console.WindowWidth/2-str.Length/2, Console.WindowHeight/2+yAdd);
                 curSub = str.Substring(i, 1);
                 for (int j=Console.WindowWidth/2+str.Length/2; j>i+Console.WindowWidth/2-str.Length/2; j--)
@@ -349,7 +351,7 @@ namespace Forca
 
             }
 
-            Console.BackgroundColor = prevColor;
+            Console.ForegroundColor = prevColor;
         }
     }
 
