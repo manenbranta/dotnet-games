@@ -239,7 +239,7 @@ namespace Forca
 
                     Window.ClearPos(Console.WindowWidth/2-40,Console.WindowHeight/2+22,80);
                     Window.WriteCenter(cesar,20);
-                    Window.WriteCenter("Escreva uma letra: ",21);
+                    Window.WriteCenter("Escreva uma letra ou \"dica\" para receber uma dica: ",21);
 
                     string read = Console.ReadLine().Trim(' ').ToLower();
                     char letra = read[0];
