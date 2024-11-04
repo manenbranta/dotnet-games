@@ -7,26 +7,22 @@ using Mauro.Utils;
 class Program
 {
     static bool gameIsRunning = true;
-    static (int Width, int Height) screen = (80,25);
+    public static (int Width, int Height) screen = (80,25);
 
-    static string[] args = [];
+    static string[] args = {};
 
     const int FPS = 60;
     const double FrameTime = 1000.0/FPS;
 
     static void Main(string[] Args)
     {
-        double dt = 1/60;
+        double dt = 1/20;
         Stopwatch _stopwatch = new Stopwatch();
         double preUpdate,postUpdate;
 
-        Player plr = new Player(new Vector2(0,1));
-        Wall wall = new Wall(new Vector2(0,2), new Vector2(25,5));
-        Wall wall2 = new Wall(new Vector2(25,0), new Vector2(3,2));
-
         args = Args;
 
-        Init(new GameObject[] {plr, wall, wall2});
+        Init();
         
         _stopwatch.Start();
 
@@ -35,7 +31,7 @@ class Program
             _stopwatch.Restart();
             preUpdate = _stopwatch.Elapsed.TotalMilliseconds;
 
-            Game.Instance.Update(dt);
+            Game.Instance.Update();
             Game.Instance.Render(screen.Width,screen.Height);
 
             postUpdate = _stopwatch.Elapsed.TotalMilliseconds;
@@ -47,7 +43,7 @@ class Program
         }
     }
 
-    static void Init(GameObject[] obj)
+    static void Init()
     {
         Console.Clear();
         Console.CursorVisible = false;
@@ -86,10 +82,5 @@ class Program
 
         // O framerate em que a simulação do jogo roda
         //Game.Instance.DeltaTime = 60;
-        
-        foreach (var o in obj)
-        {
-            Game.Instance.AddObject(o);
-        }
     }
 }
