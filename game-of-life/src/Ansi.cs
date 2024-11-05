@@ -25,6 +25,7 @@ public static class Ansi
     public static string HiCol => Enabled ? "\u001b[1m" : "";
     public static string LoCol => Enabled ? "\u001b[2m" : "";
     public static string Underline => Enabled ? "\u001b[4m" : "";
+    public static string Blink => Enabled ? "\u001b[5m" : "";
     public static string Inverse => Enabled ? "\u001b[7m" : "";
 
     public static string FBlack => Enabled ? "\u001b[30m" : "";
@@ -53,8 +54,10 @@ public static class Ansi
 
     //public static string JumpTo(Vector2 pos) => $"\u001b[{pos.Y};{pos.X}H" : "";
 
-    public static string CursorPosSave => Enabled ? $"\u001b[s" : "";
-    public static string CursorPosRestore => Enabled ? $"\u001b[u" : "";
+    public static string CursorPosSave => Enabled ? "\u001b[s" : "";
+    public static string CursorPosRestore => Enabled ? "\u001b[u" : "";
+    public static string ScreenSave => Enabled ? "\u001b[?47h" : "";
+    public static string ScreenRestore => Enabled ? "\u001b[?47l" : "";
 
     public static string FRGB(int red, int green, int blue) => Enabled ? $"\u001b[38;2;{red};{green};{blue}m" : "";
     public static string BRGB(int red, int green, int blue) => Enabled ? $"\u001b[48;2;{red};{green};{blue}m" : "";

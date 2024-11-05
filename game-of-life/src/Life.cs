@@ -37,6 +37,8 @@ class Life
             }
         }
 
+        cells[cursorRow, cursorCol].IsCursor = true;
+
         cells[1, 2].Alive = true;
         cells[2, 3].Alive = true;
         cells[3, 1].Alive = true;
@@ -46,23 +48,24 @@ class Life
 
     public void Update()
     {
-        for (int row=0; row < Rows; row++)
+        for (int row = 0; row < Rows; row++)
         {
-            for (int col=0; col < Cols; col++)
+            for (int col = 0; col < Cols; col++)
             {
                 int liveNeighbors = CountLiveNeighbors(row, col);
                 bool isAlive = cells[row, col].Alive;
 
-                if (isAlive)
-                    nextCells[row, col].Alive = liveNeighbors == 2 || liveNeighbors == 3;
-                else
-                    nextCells[row, col].Alive = liveNeighbors == 3;
+                nextCells[row, col].Alive = isAlive ? (liveNeighbors == 2 || liveNeighbors == 3) : (liveNeighbors == 3);
             }
         }
 
-        Cell[,] temp = cells;
-        cells = nextCells;
-        nextCells = temp;
+        for (int row = 0; row < Rows; row++)
+        {
+            for (int col = 0; col < Cols; col++)
+            {
+                cells[row, col].Alive = nextCells[row, col].Alive;
+            }
+        }
     }
 
     public void MoveCursor(int dRow, int dCol)
@@ -83,7 +86,60 @@ class Life
         if (Paused)
         {
             cells[cursorRow,cursorCol].Alive = !cells[cursorRow,cursorCol].Alive;
-            Console.WriteLine($"Toggled cell at ({cursorRow}, {cursorCol}) to {(cells[cursorRow, cursorCol].Alive ? "Alive" : "Dead")}");
+        }
+    }
+
+    public void AddFromString(string str)
+    {
+        string[] lines = str.Split(new[] { '\n' }, StringSplitOptions.None);
+
+        for (int line = 0; line<lines.Length; line++)
+        {
+            string sub = lines[line];
+
+            for (int i=0; i<sub.Length; i++)
+            {
+                int wrap = (cursorCol+i) % Cols;
+
+                cells[cursorRow, wrap].Alive = sub[i] == '█';
+            }
+        }
+    }
+
+    public void Pause()
+    {
+        Paused = true;
+
+        cells[cursorRow, cursorCol].IsCursor = true;
+    }
+
+    public void Unpause()
+    {
+        Paused = false;
+
+        cells[cursorRow, cursorCol].IsCursor = false;
+    }
+
+    Random rng = new Random();
+    public void Randomize(double density)
+    {   
+        if (Paused)
+        {
+            foreach (var c in cells)
+            {
+                c.Alive = rng.NextDouble() < density;
+            }
+        }
+    }
+
+    public void Clear()
+    {   
+        if (Paused)
+        {
+            foreach (var c in cells)
+            {
+                c.Alive = false;
+            }
         }
     }
 

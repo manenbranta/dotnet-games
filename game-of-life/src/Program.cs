@@ -11,6 +11,24 @@ class Program
 
     const int SLEEP_TIME = 60;
 
+    static string[] patterns =
+    {
+        #region PATTERNS
+        // Blinker
+        "███",
+        // Toad
+        "  █ " + "\n" +
+        "█  █" + "\n" +
+        "█  █" + "\n" +
+        " █  ",
+        // Beacon
+        "██  " + "\n" +
+        "██  " + "\n" +
+        "  ██" + "\n" +
+        "  ██"
+        #endregion
+    };
+
     static void Main(string[] Args)
     {
         args = Args;
@@ -18,6 +36,11 @@ class Program
         Init();
 
         Life life = new Life(screen.Width,screen.Height);
+        Dictionary<string, Action<string[]>> commands = new Dictionary<string, Action<string[]>>()
+        {
+            {"clear", (string[] args) => {life.Clear();}},
+            {"glider", (string[] args) => {life.AddFromString(patterns[0]);}}
+        };
 
         while (gameIsRunning)
         {
@@ -27,23 +50,41 @@ class Program
 
                 switch (key)
                 {
+                    case ConsoleKey.A:
                     case ConsoleKey.LeftArrow:
                         life.MoveCursor(-1,0);
                         break;
+                    case ConsoleKey.D:
                     case ConsoleKey.RightArrow:
                         life.MoveCursor(1,0);
                         break;
+                    case ConsoleKey.W:
                     case ConsoleKey.UpArrow:
                         life.MoveCursor(0,-1);
                         break;
+                    case ConsoleKey.S:
                     case ConsoleKey.DownArrow:
                         life.MoveCursor(0,1);
+                        break;
+                    case ConsoleKey.C:
+                        life.Clear();
+                        break;
+                    case ConsoleKey.R:
+                        life.Randomize(new Random().NextDouble());
                         break;
                     case ConsoleKey.Spacebar:
                         life.ToggleCell();
                         break;
                     case ConsoleKey.P:
-                        life.Paused = !life.Paused;
+                    case ConsoleKey.E:
+                    case ConsoleKey.Enter:
+                        if (life.Paused)
+                            life.Unpause();
+                        else
+                            life.Pause();
+                        break;
+                    case ConsoleKey.Q:
+                        gameIsRunning = false;
                         break;
                 }
             }
@@ -52,18 +93,29 @@ class Program
             Game.Instance.Update();
             Game.Instance.Render(screen.Width,screen.Height);
 
+            clearLine(screen.Height+1);
             Console.SetCursorPosition(0,screen.Height+1);
-            Console.WriteLine($"Paused? {life.Paused}");
-            Console.WriteLine($"Cursor position: ({life.cursorRow}, {life.cursorCol})");
+            if (!life.Paused)
+                Console.WriteLine($"{Ansi.FGreen}Press E to enter edit mode{Ansi.Reset}");
+            else 
+                Console.WriteLine($"Press R to get a random grid // Press C to clear the grid // Press SPACE to toggle a cell // Use the arrow keys to move // Press Q to Quit");
 
             Thread.Sleep(SLEEP_TIME);
         }
+        Console.Clear();
     }
 
     static void Init()
     {
         Console.Clear();
         Console.CursorVisible = false;
+
+        Console.CancelKeyPress += (sender, e) =>
+        {
+            gameIsRunning = false;
+            Console.Clear();
+            e.Cancel = true; 
+        };
 
         if (OperatingSystem.IsWindows())
         {
@@ -88,8 +140,11 @@ class Program
                 Game.Instance.ColorRendering = false;
             }
         }
+    }
 
-        // O framerate em que a simulação do jogo roda
-        //Game.Instance.DeltaTime = 60;
+    static void clearLine(int y)
+    {
+        Console.SetCursorPosition(0,y);
+        Console.Write(new string(' ', Console.BufferWidth));
     }
 }
