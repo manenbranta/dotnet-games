@@ -1,4 +1,4 @@
-namespace Mauro.Utils;
+namespace Life.Utils;
 
 public struct Vector2
 {

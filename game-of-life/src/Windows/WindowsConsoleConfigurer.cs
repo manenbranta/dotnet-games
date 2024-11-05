@@ -1,4 +1,4 @@
-namespace Mauro.Windows;
+namespace Life.Windows;
 
 using System.Runtime.InteropServices;
 internal class WindowsConsoleConfigurer

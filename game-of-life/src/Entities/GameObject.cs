@@ -1,6 +1,6 @@
-namespace Mauro.Entities;
+namespace Life.Entities;
 
-using Mauro.Utils;
+using Utils;
 
 public abstract class GameObject
 {

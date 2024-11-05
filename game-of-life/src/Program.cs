@@ -1,8 +1,8 @@
-﻿namespace Mauro;
+﻿namespace Life;
 
 using System.Diagnostics;
-using Mauro.Entities;
-using Mauro.Utils;
+using Entities;
+using Utils;
 
 class Program
 {
@@ -11,35 +11,23 @@ class Program
 
     static string[] args = {};
 
-    const int FPS = 60;
-    const double FrameTime = 1000.0/FPS;
+    const int SLEEP_TIME = 60;
 
     static void Main(string[] Args)
     {
-        double dt = 1/20;
-        Stopwatch _stopwatch = new Stopwatch();
-        double preUpdate,postUpdate;
-
         args = Args;
 
         Init();
-        
-        _stopwatch.Start();
+
+        Life life = new Life(screen.Width,screen.Height);
 
         while (gameIsRunning)
         {
-            _stopwatch.Restart();
-            preUpdate = _stopwatch.Elapsed.TotalMilliseconds;
-
+            life.Update();
             Game.Instance.Update();
             Game.Instance.Render(screen.Width,screen.Height);
 
-            postUpdate = _stopwatch.Elapsed.TotalMilliseconds;
-            _stopwatch.Stop();
-
-            dt = postUpdate - preUpdate;
-
-            Thread.Sleep(Math.Max((int)(FrameTime-dt), 0));
+            Thread.Sleep(SLEEP_TIME);
         }
     }
 

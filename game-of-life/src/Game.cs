@@ -1,31 +1,18 @@
-﻿using Mauro;
-using System.Text;
-using Mauro.Utils;
-using Mauro.Entities;
+﻿using System.Text;
+using Life.Entities;
 
 public class Game
 {
-    public Cell[,] Cells;
-    char[,] screen;
-    string[,] colors;
-
-    public int Columns { get { return Cells.GetLength(0); } }
-    public int Rows { get { return Cells.GetLength(1); } }
+    private List<GameObject> _objects = new List<GameObject>();
 
     private static readonly Game _instance = new Game();
 
     public bool ColorRendering = true;
 
-    private Game() 
-    {
-        Cells = new Cell[Program.screen.Width, Program.screen.Height];
-        for (int x = 0; x < Columns; x++)
-            for (int y = 0; y < Rows; y++)
-                Cells[x, y] = new Cell(new Vector2(x,y));
+    char[,] screen;
+    string[,] colors;
 
-        PopulateNeighbors();
-        Randomize(.1);
-    }
+    private Game() {}
 
     public static Game Instance
     {
@@ -35,45 +22,24 @@ public class Game
         }
     }
 
+    public void AddObject(GameObject obj)
+    {
+        _objects.Add(obj);
+    }
+
+    public void RemoveObject(GameObject obj)
+    {
+        _objects.Remove(obj);
+    }
+
     public IEnumerable<GameObject> GetObjects()
     {
-        return Cells.Cast<GameObject>();
-    }
-
-    private void PopulateNeighbors()
-    {
-        for (int x = 0; x < Columns; x++)
-        {
-            for (int y = 0; y < Rows; y++)
-            {
-                int xL = (x > 0) ? x - 1 : Columns - 1;
-                int xR = (x < Columns - 1) ? x + 1 : 0;
-
-                int yT = (y > 0) ? y - 1 : Rows - 1;
-                int yB = (y < Rows - 1) ? y + 1 : 0;
-
-                Cells[x, y].neighbors.Add(Cells[xL, yT]);
-                Cells[x, y].neighbors.Add(Cells[x, yT]);
-                Cells[x, y].neighbors.Add(Cells[xR, yT]);
-                Cells[x, y].neighbors.Add(Cells[xL, y]);
-                Cells[x, y].neighbors.Add(Cells[xR, y]);
-                Cells[x, y].neighbors.Add(Cells[xL, yB]);
-                Cells[x, y].neighbors.Add(Cells[x, yB]);
-                Cells[x, y].neighbors.Add(Cells[xR, yB]);
-            }
-        }
-    }
-
-    private Random rng = new Random();
-    public void Randomize(double density)
-    {
-        foreach (var c in Cells)
-            c.State = rng.NextDouble() < density ? State.ALIVE : State.DEAD;
+        return _objects;
     }
 
     public void Update()
     {
-        foreach (var obj in Cells)
+        foreach (var obj in _objects)
         {
             obj.Update();
         }
@@ -96,18 +62,25 @@ public class Game
             }
         }
 
-        foreach (var obj in Cells)
+        foreach (var obj in _objects)
         {
-            obj.Render(screen,colors);
+            obj.Render(screen, colors);
         }
 
         for (int y = 0; y < screenHeight; y++)
         {
             for (int x = 0; x < screenWidth; x++)
             {
-                sb.Append(colors[x, y]);
-                sb.Append(screen[x, y]);
-                sb.Append(Ansi.Reset);
+                if (ColorRendering)
+                {
+                    sb.Append(colors[x,y]);
+                    sb.Append(screen[x, y]);
+                    sb.Append(Ansi.Reset);
+                }
+                else
+                {
+                    sb.Append(screen[x, y]);
+                }
             }
             sb.AppendLine();
         }
