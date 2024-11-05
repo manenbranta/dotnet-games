@@ -1,9 +1,5 @@
 ﻿namespace Life;
 
-using System.Diagnostics;
-using Entities;
-using Utils;
-
 class Program
 {
     static bool gameIsRunning = true;
@@ -23,7 +19,34 @@ class Program
 
         while (gameIsRunning)
         {
-            life.Update();
+            if (Console.KeyAvailable)
+            {
+                ConsoleKey key = Console.ReadKey(true).Key;
+
+                switch (key)
+                {
+                    case ConsoleKey.LeftArrow:
+                        life.MoveCursor(-1,0);
+                        break;
+                    case ConsoleKey.RightArrow:
+                        life.MoveCursor(1,0);
+                        break;
+                    case ConsoleKey.UpArrow:
+                        life.MoveCursor(0,-1);
+                        break;
+                    case ConsoleKey.DownArrow:
+                        life.MoveCursor(0,1);
+                        break;
+                    case ConsoleKey.Spacebar:
+                        life.ToggleCell();
+                        break;
+                    case ConsoleKey.P:
+                        life.Paused = !life.Paused;
+                        break;
+                }
+            }
+            if (!life.Paused)
+                life.Update();
             Game.Instance.Update();
             Game.Instance.Render(screen.Width,screen.Height);
 
@@ -36,16 +59,8 @@ class Program
         Console.Clear();
         Console.CursorVisible = false;
 
-        Console.SetWindowSize(screen.Width, screen.Height);
-
         if (OperatingSystem.IsWindows())
         {
-            /*
-            * No Windows, o BufferSize pode ser maior que o WindowSize, 
-            * o que faz uma scrollbar horizontal aparecer. Fazer isso previne esse bug.
-            */
-            Console.SetBufferSize(screen.Width, screen.Height);
-
             /*
             * No Windows, as escape sequences ANSI não são ativadas por padrão,
             * então é preciso manualmente ativá-las para poder usar elas. Elas foram

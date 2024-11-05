@@ -11,12 +11,17 @@ class Life
     public int Rows { get {return cells.GetLength(0);} }
     public int Cols { get {return cells.GetLength(1);} }
 
+    public bool Paused { get; set; }
+
+    int cursorRow, cursorCol;
+
     public Life(int rows, int cols)
     {
         cells = new Cell[rows,cols];
         nextCells = new Cell[rows,cols];
 
         Init();
+        Paused = true;
     }
 
     public void Init()
@@ -32,11 +37,11 @@ class Life
             }
         }
 
-        cells[1, 2].Alive = true;
+        /*cells[1, 2].Alive = true;
         cells[2, 3].Alive = true;
         cells[3, 1].Alive = true;
         cells[3, 2].Alive = true;
-        cells[3, 3].Alive = true;
+        cells[3, 3].Alive = true;*/
     }
 
     public void Update()
@@ -58,6 +63,21 @@ class Life
         Cell[,] temp = cells;
         cells = nextCells;
         nextCells = temp;
+    }
+
+    public void MoveCursor(int dCol, int dRow)
+    {
+        if (Paused)
+        {
+            cursorRow = (cursorRow + dRow + Rows) % Rows;
+            cursorCol = (cursorCol + dCol + Cols) % Cols;
+        }
+    }
+
+    public void ToggleCell()
+    {
+        if (Paused)
+            cells[cursorRow,cursorCol].Alive = !cells[cursorRow,cursorCol].Alive;
     }
 
     int CountLiveNeighbors(int row, int col)
