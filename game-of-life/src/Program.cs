@@ -1,5 +1,7 @@
 ﻿namespace Life;
 
+using System;
+
 class Program
 {
     static bool gameIsRunning = true;
@@ -49,6 +51,10 @@ class Program
                 life.Update();
             Game.Instance.Update();
             Game.Instance.Render(screen.Width,screen.Height);
+
+            Console.SetCursorPosition(0,screen.Height+1);
+            Console.WriteLine($"Paused? {life.Paused}");
+            Console.WriteLine($"Cursor position: ({life.cursorRow}, {life.cursorCol})");
 
             Thread.Sleep(SLEEP_TIME);
         }

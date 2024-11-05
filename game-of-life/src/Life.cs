@@ -13,7 +13,7 @@ class Life
 
     public bool Paused { get; set; }
 
-    int cursorRow, cursorCol;
+    public int cursorRow, cursorCol;
 
     public Life(int rows, int cols)
     {
@@ -37,11 +37,11 @@ class Life
             }
         }
 
-        /*cells[1, 2].Alive = true;
+        cells[1, 2].Alive = true;
         cells[2, 3].Alive = true;
         cells[3, 1].Alive = true;
         cells[3, 2].Alive = true;
-        cells[3, 3].Alive = true;*/
+        cells[3, 3].Alive = true;
     }
 
     public void Update()
@@ -65,19 +65,26 @@ class Life
         nextCells = temp;
     }
 
-    public void MoveCursor(int dCol, int dRow)
+    public void MoveCursor(int dRow, int dCol)
     {
         if (Paused)
         {
-            cursorRow = (cursorRow + dRow + Rows) % Rows;
+            cells[cursorRow, cursorCol].IsCursor = false;
+
             cursorCol = (cursorCol + dCol + Cols) % Cols;
+            cursorRow = (cursorRow + dRow + Rows) % Rows;
+
+            cells[cursorRow, cursorCol].IsCursor = true;
         }
     }
 
     public void ToggleCell()
     {
         if (Paused)
+        {
             cells[cursorRow,cursorCol].Alive = !cells[cursorRow,cursorCol].Alive;
+            Console.WriteLine($"Toggled cell at ({cursorRow}, {cursorCol}) to {(cells[cursorRow, cursorCol].Alive ? "Alive" : "Dead")}");
+        }
     }
 
     int CountLiveNeighbors(int row, int col)
